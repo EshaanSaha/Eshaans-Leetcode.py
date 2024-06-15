@@ -1,0 +1,27 @@
+class Solution:
+    def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+        # Create a list of tuples containing (capital, profit) for each project
+        projects = [(capital[i], profits[i]) for i in range(len(profits))]
+        
+        # Sort the list of projects by increasing capital required to start them
+        projects.sort()
+        
+        # Initialize a max heap to keep track of available profits from projects
+        heap = []
+        
+        # Loop through k projects or until we run out of projects to consider
+        for _ in range(k):
+            # Add all available projects we can currently afford to the max heap
+            while projects and projects[0][0] <= w:
+                capital, profit = projects.pop(0)
+                heapq.heappush(heap, -profit)
+            
+            # If there are no available projects, we can't make any more profit
+            if not heap:
+                break
+            
+            # Take the project with the highest profit from the max heap and add its profit to our total
+            w -= heapq.heappop(heap)
+        
+        # Return the final total capital
+        return w
