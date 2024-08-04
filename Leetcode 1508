@@ -1,0 +1,26 @@
+from typing import List
+
+class Solution:
+    def rangeSum(self, nums: List[int], n: int, left: int, right: int) -> int:
+        # Initialize an array to store the sum of contiguous subarrays
+        subarray_sums = []
+      
+        # Calculate the sum of every contiguous subarray and store it into subarray_sums
+        for i in range(n):
+            current_sum = 0
+            for j in range(i, n):
+                current_sum += nums[j]  # Add the current element to the sum
+                subarray_sums.append(current_sum)  # Append the current sum to the list
+      
+        # Sort the array of subarray sums in non-decreasing order
+        subarray_sums.sort()
+      
+        # Define the modulus value to prevent integer overflow issues
+        mod = 10**9 + 7
+      
+        # Compute the sum of the elements from the 'left' to 'right' indices
+        # Note: The '-1' adjustment is required because list indices in Python are 0-based
+        range_sum = sum(subarray_sums[left - 1 : right]) % mod
+      
+        # Return the computed sum modulo 10^9 + 7
+        return range_sum
